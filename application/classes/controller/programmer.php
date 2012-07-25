@@ -7,7 +7,11 @@ class Controller_Programmer extends Controller
 {
 	public function action_index()
 	{
-		$this->response->body('hello, programmer!');
+		$programmers = ORM::factory('programmer')->find_all();
+
+		$view = View::factory('programmer/index')->bind('programmers', $programmers);
+
+		$this->response->body($view->render());
 	}
 
 	public function action_new()
@@ -22,7 +26,6 @@ class Controller_Programmer extends Controller
 
 	public function action_edit($id)
 	{
-		$this->response->body('edit programmer?');
 	}
 
 	public function action_delete($id)
