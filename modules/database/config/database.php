@@ -40,9 +40,9 @@ return array
 			 * string   password    database password
 			 * boolean  persistent  use persistent connections?
 			 */
-			'dsn'        => 'mysql:host=localhost;dbname=kohana',
+			'dsn'        => 'mysql:host=localhost;dbname=petapia-kohana',
 			'username'   => 'root',
-			'password'   => 'r00tdb',
+			'password'   => 'ms!? Theking178',
 			'persistent' => FALSE,
 		),
 		/**
