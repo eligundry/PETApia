@@ -1,4 +1,4 @@
-<table>
+<table class="table table-stripped table-bordered">
     <thead>
         <tr>
             <th>First Name</th>

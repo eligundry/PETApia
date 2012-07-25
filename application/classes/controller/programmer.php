@@ -3,33 +3,49 @@
 /**
  * Programmer Controller
  */
-class Controller_Programmer extends Controller
+class Controller_Programmer extends Controller_Bootstrap
 {
 	public function action_index()
 	{
 		$programmers = ORM::factory('programmer')->find_all();
-
 		$view = View::factory('programmer/index')->bind('programmers', $programmers);
 
-		$this->response->body($view->render());
+		$this->template->title = "All Programmers";
+		$this->template->content = $view;
 	}
 
 	public function action_new()
 	{
-		$this->response->body('create new programmer?');
+		$view = View::factory('programmer/new');
+
+		$this->template->title = "Create New Programmer";
+		$this->template->content = $view;
 	}
 
-	public function action_view($id)
+	public function action_view()
 	{
-		$this->response->body('view programmer');
+		$programmer = ORM::factory('programmer', $this->request->param('id'));
+		$view = View::factory('programmer/view')->bind('programmer', $programmer);
+
+		$this->template->title = $programmer->first_name . " " . $programmer->last_name;
+		$this->template->content = $view;
 	}
 
-	public function action_edit($id)
+	public function action_edit()
 	{
+		$programmer = ORM::factory('programmer', $this->request->param('id'));
+		$view = View::factory('programmer/edit')->bind('programmer', $programmer);
+
+		$this->template->title = "Editing " . $programmer->first_name . " " . $programmer->last_name;
+		$this->template->content = $view;
 	}
 
-	public function action_delete($id)
+	public function action_delete()
 	{
-		$this->response->body('delete programmer?');
+		$programmer = ORM::factory('programmer', $this->request->param('id'));
+		$view = View::factory('programmer/delete')->bind('programmer', $programmer);
+
+		$this->template->title = "Deleting " . $programmer->first_name . " " . $programmer->last_name;
+		$this->template->content = $view;
 	}
 }
