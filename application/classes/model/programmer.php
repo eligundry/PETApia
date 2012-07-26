@@ -18,30 +18,54 @@ class Model_Programmer extends ORM
 			'max_length' => array(32),
 			'regex' => array('/^[-\pL\pN_.]++$/uD'),
 		),
+		'weight' => array(
+			'min_length' => array(0),
+			'max_length' => array(3),
+			'digit' => true,
+		),
+		'height' => array(
+			'min_length' => array(0),
+			'max_length' => array(3),
+			'digit' => true,
+		),
 	);
 
-	public function get_all_programmers()
-	{
-		return true;
-	}
+	protected $_has_one = array(
+		'typing' => array(
+			'model' => 'typing',
+			'foreign_key' => 'id',
+		),
+	);
 
-	public function get_programmer($id)
+	public function save_programmer($data)
 	{
-		return true;
-	}
+		// First we'll set up the programmer...
+		if ($data['update']) {
+			$programmer = ORM::factory('programmer', $data['update']);
+		} else {
+			$programmer = ORM::factory('programmer');
+		}
 
-	public function create_programmer()
-	{
-		return true;
-	}
+		$programmer->first_name = $data['first_name'];
+		$programmer->last_name = $data['last_name'];
+		$programmer->height = $data['height'];
+		$programmer->weight = $data['weight'];
 
-	public function update_programmer()
-	{
-		return true;
-	}
+		// Then their typing statistics
+		if ($programmer->type_stats != NULL) {
+			$typing = ORM::factory('typing', $programmer->type_stats);
+		} else {
+			$typing = ORM::factory('typing');
+		}
 
-	public function delete_programmer($id)
-	{
-		return true;
+		$typing->wpm = $data['wpm'];
+		$typing->keyboard = $data['keyboard'];
+		$typing->home_row = (isset($data['home_row']) && $data['home_row']) ? 1 : 0;
+		$typing->save();
+
+		$programmer->type_stats = $typing->id;
+
+		$programmer->save();
+
 	}
 }
